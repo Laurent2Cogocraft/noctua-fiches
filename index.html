@@ -16,118 +16,115 @@
     --radius:14px;
   }
   *{box-sizing:border-box}
-  html,body{margin:0}
+  html{min-height:100%}
   body{
-    background:
-      radial-gradient(1200px 600px at 50% -10%, #2a2013 0%, rgba(42,32,19,0) 60%),
-      var(--bg);
-    color:var(--ink);
-    font-family:"Rubik",system-ui,sans-serif;
-    line-height:1.45;
-    -webkit-font-smoothing:antialiased;
-    min-height:100dvh;
+    margin:0;overflow-x:hidden;
+    background:radial-gradient(1200px 600px at 50% -10%, #2a2013 0%, rgba(42,32,19,0) 60%), var(--bg);
+    color:var(--ink);font-family:"Rubik",system-ui,sans-serif;line-height:1.45;
+    -webkit-font-smoothing:antialiased;min-height:100dvh;
   }
-  .wrap{max-width:600px;margin:0 auto;padding:16px 14px 64px}
+  .wrap{max-width:620px;margin:0 auto;padding:16px 14px 80px}
   h1,h2,h3{font-family:"Cinzel",serif;font-weight:600;margin:0}
   a{color:var(--gold)}
   button{font-family:inherit}
   .muted{color:var(--muted)}
   .hidden{display:none!important}
 
-  /* ---------- Login ---------- */
-  .login{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:24px}
+  /* Login */
+  .login{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;overflow:auto}
   .login-card{width:100%;max-width:360px;text-align:center}
   .brand{font-family:"Cinzel",serif;font-size:34px;letter-spacing:2px;color:var(--gold)}
   .brand-sub{color:var(--muted);margin:4px 0 26px;font-size:14px}
   .rule{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:18px 0}
   .field{text-align:left;margin:12px 0}
   .field label{display:block;font-size:13px;color:var(--muted);margin-bottom:5px}
-  input,select{
-    width:100%;background:var(--bg2);border:1px solid var(--line);color:var(--ink);
-    border-radius:10px;padding:11px 12px;font-size:16px;
-  }
-  input:focus,select:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:var(--gold)}
-  .btn{
-    background:var(--gold);color:#241a08;border:none;border-radius:10px;
-    padding:11px 14px;font-size:15px;font-weight:600;cursor:pointer;width:100%;
-  }
+  input,select,textarea{width:100%;background:var(--bg2);border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:11px 12px;font-size:16px;font-family:inherit}
+  textarea{resize:vertical;min-height:64px}
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:var(--gold)}
+  .btn{background:var(--gold);color:#241a08;border:none;border-radius:10px;padding:11px 14px;font-size:15px;font-weight:600;cursor:pointer;width:100%}
   .btn:active{transform:translateY(1px)}
   .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);font-weight:500}
-  .btn.mini{width:auto;padding:6px 10px;font-size:13px;border-radius:8px}
-  .btn.mini.ghost{color:var(--ink)}
+  .btn.mini{width:auto;padding:7px 11px;font-size:13px;border-radius:8px}
   .msg{margin-top:12px;font-size:14px;min-height:18px}
   .msg.err{color:var(--blood)}
-  .msg.ok{color:var(--venom)}
 
-  /* ---------- Top bar ---------- */
+  /* Top bar */
   .topbar{display:flex;align-items:center;gap:10px;justify-content:space-between;margin-bottom:14px}
   .topbar select{width:auto;flex:1;min-width:0}
   .who{font-size:13px;color:var(--muted)}
 
-  /* ---------- Header / identity ---------- */
+  /* Identity */
   .idcard{background:linear-gradient(180deg,var(--panel),var(--bg2));border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-bottom:14px}
   .idname{font-size:26px;color:var(--gold);line-height:1.1}
   .idmeta{color:var(--muted);font-size:13px;margin-top:6px}
   .roflag{display:inline-block;font-size:11px;color:var(--venom);border:1px solid var(--venom);border-radius:999px;padding:1px 8px;margin-left:6px;vertical-align:middle}
   .readonly-note{color:var(--blood);font-size:12px;margin-top:8px}
 
-  /* ---------- Panels ---------- */
+  /* Panels */
   .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px;margin-bottom:14px}
-  .panel > h2{font-size:15px;letter-spacing:.5px;color:var(--ink);margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+  .panel > h2{font-size:15px;letter-spacing:.5px;color:var(--ink);margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:10px}
   .panel > h2 .count{font-family:"Rubik";font-size:12px;color:var(--muted);font-weight:400}
+  .subh{font-size:12px;color:var(--muted);margin:14px 0 6px;letter-spacing:.5px}
 
-  /* ---------- Vitals hero ---------- */
+  /* Vitals */
   .vitals{text-align:center}
-  .hp-num{font-family:"Cinzel";font-size:52px;line-height:1;color:var(--ink)}
+  .hp-num{font-family:"Cinzel";font-size:52px;line-height:1}
   .hp-num small{font-size:22px;color:var(--muted)}
   .hp-label{color:var(--muted);font-size:12px;letter-spacing:2px;margin-bottom:8px}
   .gauge{height:12px;background:#1a140c;border:1px solid var(--line);border-radius:999px;overflow:hidden;margin:12px 0}
   .gauge > span{display:block;height:100%;background:linear-gradient(90deg,#5f7f2a,var(--venom));transition:width .35s ease}
   .gauge.low > span{background:linear-gradient(90deg,#7a2f27,var(--blood))}
-  .hp-btns{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:6px}
-  .hp-btns button{border:1px solid var(--line);background:var(--bg2);color:var(--ink);border-radius:9px;padding:9px 0;font-size:14px;font-weight:600;cursor:pointer}
-  .hp-btns button.dmg{color:#eab5ad;border-color:#5c342d}
-  .hp-btns button.heal{color:#cfe6a3;border-color:#41521f}
+  .hp-amt{display:flex;gap:6px;margin-top:10px}
+  .hp-amt input{flex:1}
+  .hp-amt button{white-space:nowrap}
+  .hp-quick{display:flex;gap:6px;justify-content:center;margin-top:8px}
+  .hp-quick button{flex:1;border:1px solid var(--line);background:var(--bg2);color:var(--ink);border-radius:9px;padding:9px 0;font-weight:600;cursor:pointer}
+  .hp-quick .dmg{color:#eab5ad;border-color:#5c342d}
+  .hp-quick .heal{color:#cfe6a3;border-color:#41521f}
 
-  /* ---------- Stats grid ---------- */
+  /* Stats */
   .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
   .stat{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:10px 6px;text-align:center}
-  .stat .v{font-family:"Cinzel";font-size:24px;color:var(--ink)}
+  .stat .v{font-family:"Cinzel";font-size:24px}
   .stat .n{font-size:11px;color:var(--muted);margin-top:2px}
   .stat .b{font-size:10px;color:var(--muted);opacity:.8}
   .stat.up .v{color:var(--venom)} .stat.down .v{color:var(--blood)}
 
-  /* ---------- Gold ---------- */
+  /* Gold */
   .goldrow{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
   .goldval{font-family:"Cinzel";font-size:26px;color:var(--gold)}
   .goldctrls{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-  .goldctrls input{width:96px}
+  .goldctrls input{width:100px}
 
-  /* ---------- Survival ---------- */
+  /* Survival */
   .surv{display:grid;gap:12px}
   .surv-row{display:flex;align-items:center;gap:10px}
-  .surv-row .name{width:92px;font-size:13px}
+  .surv-row .name{width:98px;font-size:13px}
   .pips{display:flex;gap:4px;flex:1}
   .pip{height:10px;flex:1;border-radius:3px;background:#1a140c;border:1px solid var(--line)}
   .surv-food .pip.on{background:var(--food)} .surv-water .pip.on{background:var(--water)} .surv-rest .pip.on{background:var(--rest)}
-  .surv-row .eff{width:74px;text-align:right;font-size:12px;color:var(--muted)}
+  .surv-row .eff{width:80px;text-align:right;font-size:12px;color:var(--muted)}
   .stepper{display:flex;gap:4px}
   .stepper button{width:30px;height:30px;border:1px solid var(--line);background:var(--bg2);color:var(--ink);border-radius:8px;font-size:16px;cursor:pointer;line-height:1}
 
-  /* ---------- Lists ---------- */
+  /* Lists */
   .item{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--line)}
   .item:first-child{border-top:none}
+  .item.locked{opacity:.55}
   .item .body{flex:1;min-width:0}
   .item .t{font-weight:500}
-  .item .d{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .item .d{font-size:12.5px;color:var(--muted);margin-top:2px;white-space:pre-wrap}
   .tag{font-size:10.5px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:1px 6px;margin-left:6px;white-space:nowrap}
   .tag.eq{color:var(--venom);border-color:var(--venom)}
   .tag.dmg{color:#eab5ad;border-color:#5c342d}
-  .item .acts{display:flex;gap:6px;align-items:center;flex-shrink:0}
+  .tag.rank{color:var(--gold);border-color:var(--gold)}
+  .tag.lock{color:#e0b56a;border-color:#6a4e22}
+  .item .acts{display:flex;gap:6px;align-items:center;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
   .qty{display:flex;align-items:center;gap:6px}
   .qty b{min-width:18px;text-align:center}
-  .iconbtn{width:30px;height:30px;border:1px solid var(--line);background:var(--bg2);color:var(--ink);border-radius:8px;cursor:pointer;font-size:15px;line-height:1}
+  .iconbtn{min-width:30px;height:30px;padding:0 8px;border:1px solid var(--line);background:var(--bg2);color:var(--ink);border-radius:8px;cursor:pointer;font-size:13px;line-height:1}
   .iconbtn.danger{color:#eab5ad;border-color:#5c342d}
+  .iconbtn.good{color:#cfe6a3;border-color:#41521f}
   .switch{position:relative;display:inline-block;width:42px;height:24px}
   .switch input{display:none}
   .slider{position:absolute;inset:0;background:#1a140c;border:1px solid var(--line);border-radius:999px;transition:.2s;cursor:pointer}
@@ -135,9 +132,12 @@
   .switch input:checked + .slider{background:#33461a;border-color:var(--venom)}
   .switch input:checked + .slider:before{transform:translateX(18px);background:var(--venom)}
 
+  .addrow{display:flex;gap:6px;margin-top:12px}
+  .addrow input{flex:1;padding:9px 10px;font-size:14px}
   .addform{display:grid;grid-template-columns:1fr auto auto;gap:6px;margin-top:12px}
-  .addform input{padding:9px 10px;font-size:14px}
-  .addform select{padding:9px 10px;font-size:13px}
+  .addform input,.addform select{padding:9px 10px;font-size:14px}
+  .stateform{display:grid;grid-template-columns:1fr 1fr 70px auto;gap:6px;margin-top:12px}
+  .stateform input,.stateform select{padding:9px 10px;font-size:13px}
 
   .biz{border-top:1px solid var(--line);padding:10px 0}
   .biz:first-child{border-top:none}
@@ -146,7 +146,18 @@
   .log:first-child{border-top:none}
   .log b{color:var(--ink);font-weight:500}
   .empty{color:var(--muted);font-size:13px;font-style:italic;padding:6px 0}
-  .toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:var(--panel2);border:1px solid var(--gold);color:var(--ink);padding:10px 16px;border-radius:10px;font-size:14px;opacity:0;transition:.25s;pointer-events:none;z-index:50}
+
+  /* Modal */
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:20px;z-index:60}
+  .modal .box{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px;width:100%;max-width:420px}
+  .modal h3{color:var(--gold);margin-bottom:12px}
+  .modal .field{margin:10px 0}
+  .modal .check{display:flex;align-items:center;gap:8px;margin:12px 0;font-size:14px}
+  .modal .check input{width:auto}
+  .modal .row{display:flex;gap:8px;margin-top:14px}
+  .modal .row .btn{flex:1}
+
+  .toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:var(--panel2);border:1px solid var(--gold);color:var(--ink);padding:10px 16px;border-radius:10px;font-size:14px;opacity:0;transition:.25s;pointer-events:none;z-index:80}
   .toast.show{opacity:1}
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -159,14 +170,8 @@
     <div class="brand">NOCTUA</div>
     <div class="brand-sub">Fiches de personnage — Arkahet</div>
     <div class="rule"></div>
-    <div class="field">
-      <label for="email">Identifiant</label>
-      <input id="email" type="text" autocomplete="username" placeholder="prénom@noctua.local" />
-    </div>
-    <div class="field">
-      <label for="password">Mot de passe</label>
-      <input id="password" type="password" autocomplete="current-password" />
-    </div>
+    <div class="field"><label for="email">Identifiant</label><input id="email" type="text" autocomplete="username" placeholder="prénom@noctua.local" /></div>
+    <div class="field"><label for="password">Mot de passe</label><input id="password" type="password" autocomplete="current-password" /></div>
     <button id="loginBtn" class="btn">Se connecter</button>
     <div id="loginMsg" class="msg"></div>
   </div>
@@ -182,22 +187,30 @@
   <div id="content"></div>
 </div>
 
+<!-- MODAL édition capacité -->
+<div id="abModal" class="modal hidden">
+  <div class="box">
+    <h3 id="abTitle">Technique</h3>
+    <input type="hidden" id="abId"><input type="hidden" id="abType">
+    <div class="field"><label>Nom</label><input id="abName" /></div>
+    <div class="field"><label>Description</label><textarea id="abDesc"></textarea></div>
+    <div class="field" id="abRankField"><label>Rang (optionnel)</label><input id="abRank" type="number" inputmode="numeric" placeholder="ex. 1, 2, 3" /></div>
+    <label class="check" id="abLockField"><input type="checkbox" id="abLocked"> À débloquer (verrouillée)</label>
+    <div class="row"><button class="btn ghost" data-action="closemodal">Annuler</button><button class="btn" data-action="saveability">Enregistrer</button></div>
+  </div>
+</div>
+
 <div id="toast" class="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
-/* ============================================================
-   Configuration Supabase (clé PUBLIQUE — protégée par le RLS)
-   ============================================================ */
+/* ============ Config Supabase (clé publique, protégée par RLS) ============ */
 const SB_URL = "https://zmbxaxjihswhrcrsvhrq.supabase.co";
 const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptYnhheGppaHN3aHJjcnN2aHJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkyOTMzODYsImV4cCI6MjEwNDg2OTM4Nn0.nJra_6OpfJED2tVoUWLXJFst_kED56KpPm1wgpvvQpY";
 const sb = supabase.createClient(SB_URL, SB_KEY);
 
-/* ---------- état ---------- */
 let ME = { id:null, role:"player", name:"" };
-let CHARS = [];          // personnages visibles
-let CURRENT = null;      // personnage affiché
-let CAN_EDIT = false;
+let CHARS = [], CURRENT = null, CAN_EDIT = false, SHOW_ALL_LOG = false;
 
 const PCT = {5:"+10%",4:"+5%",3:"0%",2:"-5%",1:"-10%",0:"-20%"};
 const SURV = [
@@ -206,158 +219,111 @@ const SURV = [
   {key:"rest_level",  label:"Repos",      cls:"surv-rest",  stat:"Intelligence"},
 ];
 const CAT_LABEL = {weapon:"Arme", consumable:"Consommable", quest:"Quête", misc:"Objet"};
+const EQUIPABLE = ["weapon","misc"];
+const STAT_LABEL = {force:"Force",endurance:"Endurance",agilite:"Agilité",intelligence:"Intelligence"};
 
-/* ---------- utilitaires ---------- */
 const $ = s => document.querySelector(s);
 const esc = s => (s??"").toString().replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const gold = n => (n||0).toLocaleString("fr-FR");
-let toastT;
-function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("show"),1800);}
+let toastT; function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("show"),1800);}
 
-/* ============================================================
-   Authentification
-   ============================================================ */
+/* ============ Auth ============ */
 async function login(){
-  const email = $("#email").value.trim();
-  const password = $("#password").value;
-  const msg = $("#loginMsg");
+  const email=$("#email").value.trim(), password=$("#password").value, msg=$("#loginMsg");
   msg.className="msg"; msg.textContent="Connexion…";
-  if(!email || !password){ msg.className="msg err"; msg.textContent="Renseigne l'identifiant et le mot de passe."; return; }
+  if(!email||!password){ msg.className="msg err"; msg.textContent="Renseigne l'identifiant et le mot de passe."; return; }
   const { error } = await sb.auth.signInWithPassword({ email, password });
   if(error){ msg.className="msg err"; msg.textContent="Identifiant ou mot de passe incorrect."; return; }
-  msg.textContent="";
-  await boot();
+  msg.textContent=""; await boot();
 }
 async function logout(){ await sb.auth.signOut(); location.reload(); }
 
-/* ============================================================
-   Chargement
-   ============================================================ */
+/* ============ Chargement ============ */
 async function boot(){
   const { data:{ session } } = await sb.auth.getSession();
   if(!session){ $("#login").classList.remove("hidden"); $("#app").classList.add("hidden"); return; }
   ME.id = session.user.id;
-
-  // profil (rôle + nom)
   const { data:prof } = await sb.from("profiles").select("display_name,role").eq("id",ME.id).maybeSingle();
-  ME.role = prof?.role || "player";
-  ME.name = prof?.display_name || session.user.email;
-
-  // personnages visibles (RLS : le joueur voit le sien, le MJ voit tout)
+  ME.role = prof?.role||"player"; ME.name = prof?.display_name||session.user.email;
   const { data:chars, error } = await sb.from("characters").select("*").order("name");
   if(error){ alert("Erreur de chargement : "+error.message); return; }
-  CHARS = chars || [];
-
-  $("#login").classList.add("hidden");
-  $("#app").classList.remove("hidden");
-  $("#whoami").innerHTML = esc(ME.name) + (ME.role==="gm"?' <span class="roflag">MJ</span>':"");
-
-  // sélecteur de perso (MJ ou plusieurs persos)
-  const sel = $("#charSelect");
-  if(CHARS.length > 1){
-    sel.classList.remove("hidden");
-    sel.innerHTML = CHARS.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join("");
-    sel.onchange = ()=>{ selectChar(sel.value); };
-  } else {
-    sel.classList.add("hidden");
-  }
-
-  // perso par défaut : le mien si présent, sinon le premier
-  const mine = CHARS.find(c=>c.owner_id===ME.id);
-  const startId = (mine||CHARS[0])?.id;
-  if(startId){ sel.value = startId; await selectChar(startId); }
-  else { $("#content").innerHTML = `<div class="panel empty">Aucune fiche pour ce compte. Elle sera créée pour toi prochainement.</div>`; }
+  CHARS = chars||[];
+  $("#login").classList.add("hidden"); $("#app").classList.remove("hidden");
+  $("#whoami").innerHTML = esc(ME.name)+(ME.role==="gm"?' <span class="roflag">MJ</span>':"");
+  const sel=$("#charSelect");
+  if(CHARS.length>1){ sel.classList.remove("hidden"); sel.innerHTML=CHARS.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join(""); sel.onchange=()=>selectChar(sel.value); }
+  else sel.classList.add("hidden");
+  const mine=CHARS.find(c=>c.owner_id===ME.id); const start=(mine||CHARS[0])?.id;
+  if(start){ sel.value=start; await selectChar(start); }
+  else $("#content").innerHTML=`<div class="panel empty">Aucune fiche pour ce compte pour le moment.</div>`;
 }
+async function selectChar(id){ CURRENT=CHARS.find(c=>c.id===id); if(!CURRENT)return; CAN_EDIT=CURRENT.owner_id===ME.id; SHOW_ALL_LOG=false; await renderChar(); }
+async function refreshCurrent(){ const {data}=await sb.from("characters").select("*").eq("id",CURRENT.id).maybeSingle(); if(data){CURRENT=data;const i=CHARS.findIndex(c=>c.id===data.id);if(i>=0)CHARS[i]=data;} }
 
-async function selectChar(id){
-  CURRENT = CHARS.find(c=>c.id===id);
-  if(!CURRENT) return;
-  CAN_EDIT = CURRENT.owner_id === ME.id;   // le MJ voit les autres en lecture seule
-  await renderChar();
-}
-
-async function refreshCurrent(){
-  const { data } = await sb.from("characters").select("*").eq("id",CURRENT.id).maybeSingle();
-  if(data){ CURRENT = data; const i=CHARS.findIndex(c=>c.id===data.id); if(i>=0) CHARS[i]=data; }
-}
-
-/* ============================================================
-   Rendu
-   ============================================================ */
+/* ============ Rendu ============ */
 async function renderChar(){
-  const cid = CURRENT.id;
-  const [stats, inv, abil, eff, comp, biz, logs] = await Promise.all([
+  const cid=CURRENT.id, c=CURRENT;
+  const logQ = sb.from("event_log").select("*").eq("character_id",cid).order("created_at",{ascending:false});
+  const [stats,inv,abil,eff,comp,biz,notes,logs] = await Promise.all([
     sb.from("character_effective_stats").select("*").eq("character_id",cid).maybeSingle(),
-    sb.from("inventory_items").select("*").eq("character_id",cid).order("category").order("name"),
-    sb.from("abilities").select("*").eq("character_id",cid).order("type").order("name"),
+    sb.from("inventory_items").select("*").eq("character_id",cid).order("name"),
+    sb.from("abilities").select("*").eq("character_id",cid).order("status").order("name"),
     sb.from("effects").select("*").eq("character_id",cid).order("name"),
     sb.from("companions").select("*").eq("character_id",cid).order("name"),
     sb.from("businesses").select("*").eq("character_id",cid).order("name"),
-    sb.from("event_log").select("*").eq("character_id",cid).order("created_at",{ascending:false}).limit(15),
+    sb.from("notes").select("*").eq("character_id",cid).order("created_at"),
+    SHOW_ALL_LOG? logQ : logQ.limit(15),
   ]);
-  const S = stats.data || {force_effective:0,endurance_effective:0,agilite_effective:0,intelligence_effective:0,hp_max:0};
-  const c = CURRENT;
-
-  const hpMax = S.hp_max||0;
-  const hpPct = hpMax? Math.max(0,Math.min(100, Math.round(c.hp_current/hpMax*100))):0;
-  const techs = (abil.data||[]).filter(a=>a.type!=="passive");
-  const passives = (abil.data||[]).filter(a=>a.type==="passive");
-
-  const disabled = CAN_EDIT? "" : "disabled";
-
-  const statCard = (label, base, effv)=>{
-    const cls = effv>base?"up":(effv<base?"down":"");
-    return `<div class="stat ${cls}"><div class="v">${effv}</div><div class="n">${label}</div><div class="b">base ${base}</div></div>`;
-  };
+  const S=stats.data||{force_effective:0,endurance_effective:0,agilite_effective:0,intelligence_effective:0,hp_max:0};
+  const hpMax=S.hp_max||0, hpPct=hpMax?Math.max(0,Math.min(100,Math.round(c.hp_current/hpMax*100))):0;
+  const items=inv.data||[];
+  const equipped=items.filter(i=>i.equipped), bag=items.filter(i=>!i.equipped);
+  const techs=(abil.data||[]).filter(a=>a.type!=="passive");
+  const passives=(abil.data||[]).filter(a=>a.type==="passive");
+  const dis=CAN_EDIT?"":"disabled";
+  const statCard=(l,b,e)=>`<div class="stat ${e>b?"up":(e<b?"down":"")}"><div class="v">${e}</div><div class="n">${l}</div><div class="b">base ${b}</div></div>`;
 
   $("#content").innerHTML = `
     <div class="idcard">
       <div class="idname">${esc(c.name)}</div>
       <div class="idmeta">${[c.title,c.origine,c.ordre].filter(Boolean).map(esc).join(" · ")}</div>
-      <div class="idmeta">${[c.armor?("Armure : "+esc(c.armor)):"", c.age?("Âge : "+esc(c.age)):""].filter(Boolean).join(" · ")}</div>
+      <div class="idmeta">${[c.armor?("Armure : "+esc(c.armor)):"",c.age?("Âge : "+esc(c.age)):""].filter(Boolean).join(" · ")}</div>
       ${!CAN_EDIT?`<div class="readonly-note">Lecture seule (fiche d'un autre joueur)</div>`:""}
-      ${c.notes?`<div class="idmeta" style="margin-top:8px">${esc(c.notes)}</div>`:""}
     </div>
 
     <div class="panel vitals">
       <div class="hp-label">POINTS DE VIE</div>
       <div class="hp-num">${c.hp_current}<small> / ${hpMax}</small></div>
-      <div class="gauge ${hpPct<=25?'low':''}"><span style="width:${hpPct}%"></span></div>
-      <div class="hp-btns">
-        <button class="dmg" data-action="hp" data-d="-10" ${disabled}>-10</button>
-        <button class="dmg" data-action="hp" data-d="-5" ${disabled}>-5</button>
-        <button class="dmg" data-action="hp" data-d="-1" ${disabled}>-1</button>
-        <button class="heal" data-action="hp" data-d="1" ${disabled}>+1</button>
-        <button class="heal" data-action="hp" data-d="5" ${disabled}>+5</button>
-        <button class="heal" data-action="hpfull" ${disabled}>Plein</button>
+      <div class="gauge ${hpPct<=25?"low":""}"><span style="width:${hpPct}%"></span></div>
+      <div class="hp-amt">
+        <input id="hpAmt" type="number" inputmode="numeric" placeholder="montant" ${dis}/>
+        <button class="iconbtn danger" data-action="hpamt" data-sign="-1" ${dis}>− Dégâts</button>
+        <button class="iconbtn good" data-action="hpamt" data-sign="1" ${dis}>+ Soin</button>
+      </div>
+      <div class="hp-quick">
+        <button class="dmg" data-action="hp" data-d="-1" ${dis}>−1</button>
+        <button class="heal" data-action="hp" data-d="1" ${dis}>+1</button>
+        <button class="heal" data-action="hpfull" ${dis}>Plein</button>
       </div>
     </div>
 
     <div class="panel">
       <h2>Caractéristiques <span class="count">effectif · base</span></h2>
       <div class="stats">
-        ${statCard("Force", c.force, S.force_effective)}
-        ${statCard("Endurance", c.endurance, S.endurance_effective)}
-        ${statCard("Agilité", c.agilite, S.agilite_effective)}
-        ${statCard("Intelligence", c.intelligence, S.intelligence_effective)}
+        ${statCard("Force",c.force,S.force_effective)}
+        ${statCard("Endurance",c.endurance,S.endurance_effective)}
+        ${statCard("Agilité",c.agilite,S.agilite_effective)}
+        ${statCard("Intelligence",c.intelligence,S.intelligence_effective)}
       </div>
     </div>
 
     <div class="panel">
       <h2>Survie</h2>
       <div class="surv">
-        ${SURV.map(s=>{
-          const lvl = c[s.key];
-          const pips = Array.from({length:5},(_,i)=>`<span class="pip ${i<lvl?'on':''}"></span>`).join("");
-          return `<div class="surv-row ${s.cls}">
-            <div class="name">${s.label}<div class="muted" style="font-size:11px">${s.stat}</div></div>
-            <div class="pips">${pips}</div>
-            <div class="eff">niv ${lvl} · ${PCT[lvl]}</div>
-            <div class="stepper">
-              <button data-action="surv" data-k="${s.key}" data-d="-1" ${disabled}>−</button>
-              <button data-action="surv" data-k="${s.key}" data-d="1" ${disabled}>+</button>
-            </div>
-          </div>`;
+        ${SURV.map(s=>{const lvl=c[s.key];const pips=Array.from({length:5},(_,i)=>`<span class="pip ${i<lvl?"on":""}"></span>`).join("");
+          return `<div class="surv-row ${s.cls}"><div class="name">${s.label}<div class="muted" style="font-size:11px">${s.stat}</div></div>
+            <div class="pips">${pips}</div><div class="eff">niv ${lvl} · ${PCT[lvl]}</div>
+            <div class="stepper"><button data-action="surv" data-k="${s.key}" data-d="-1" ${dis}>−</button><button data-action="surv" data-k="${s.key}" data-d="1" ${dis}>+</button></div></div>`;
         }).join("")}
       </div>
     </div>
@@ -367,187 +333,204 @@ async function renderChar(){
       <div class="goldrow">
         <div class="goldval">${gold(c.gold)} <span class="muted" style="font-size:14px">po</span></div>
         <div class="goldctrls">
-          <input id="goldAmt" type="number" placeholder="montant" ${disabled}/>
-          <button class="btn mini ghost" data-action="gold" data-sign="1" ${disabled}>+ Gagner</button>
-          <button class="btn mini ghost" data-action="gold" data-sign="-1" ${disabled}>− Dépenser</button>
+          <input id="goldAmt" type="number" inputmode="numeric" placeholder="montant" ${dis}/>
+          <button class="iconbtn good" data-action="gold" data-sign="1" ${dis}>+ Gagner</button>
+          <button class="iconbtn danger" data-action="gold" data-sign="-1" ${dis}>− Dépenser</button>
         </div>
       </div>
     </div>
 
-    ${listPanel("Inventaire", inv.data, it=>{
-      const tags = [
-        it.equipped?`<span class="tag eq">équipé</span>`:"",
-        it.damage?`<span class="tag dmg">${esc(it.damage)}</span>`:"",
-        it.category&&it.category!=="misc"?`<span class="tag">${CAT_LABEL[it.category]||esc(it.category)}</span>`:"",
-        (it.stat&&it.modifier)?`<span class="tag">${esc(it.stat)} ${it.modifier>0?"+":""}${it.modifier}</span>`:"",
-      ].join("");
-      return `<div class="item">
-        <div class="body"><div class="t">${esc(it.name)}${tags}</div>${it.description?`<div class="d">${esc(it.description)}</div>`:""}</div>
-        <div class="acts">
-          <div class="qty">
-            <button class="iconbtn" data-action="qty" data-id="${it.id}" data-d="-1" ${disabled}>−</button>
-            <b>${it.quantity}</b>
-            <button class="iconbtn" data-action="qty" data-id="${it.id}" data-d="1" ${disabled}>+</button>
-          </div>
-          <button class="iconbtn" title="Équiper / retirer" data-action="equip" data-id="${it.id}" data-v="${it.equipped?0:1}" ${disabled}>${it.equipped?"✓":"○"}</button>
-          <button class="iconbtn danger" title="Supprimer" data-action="delitem" data-id="${it.id}" ${disabled}>✕</button>
-        </div>
-      </div>`;
-    }, CAN_EDIT?`
-      <div class="addform">
-        <input id="niName" placeholder="Nouvel objet" />
-        <select id="niCat">
-          <option value="misc">Objet</option><option value="weapon">Arme</option>
-          <option value="consumable">Consommable</option><option value="quest">Quête</option>
-        </select>
-        <button class="btn mini" data-action="additem">Ajouter</button>
-      </div>`:"")}
-
-    ${listPanel("Techniques", techs, a=>simpleItem(a.name,a.description))}
-    ${listPanel("Capacités passives", passives, a=>simpleItem(a.name,a.description))}
-
-    ${listPanel("États", eff.data, e=>{
-      const label = [e.stat&&e.modifier?`${esc(e.stat)} ${e.modifier>0?"+":""}${e.modifier}`:"", e.description?esc(e.description):""].filter(Boolean).join(" — ");
-      return `<div class="item">
-        <div class="body"><div class="t">${esc(e.name)}</div>${label?`<div class="d">${label}</div>`:""}</div>
-        <div class="acts">
-          <label class="switch"><input type="checkbox" data-action="effect" data-id="${e.id}" data-v="${e.is_active?0:1}" ${e.is_active?"checked":""} ${disabled}><span class="slider"></span></label>
-        </div>
-      </div>`;
-    })}
-
-    ${listPanel("Compagnons", comp.data, k=>simpleItem(k.name, [k.type,k.description].filter(Boolean).join(" — ")))}
-
-    ${listPanel("Commerces", biz.data, b=>`<div class="biz">
-        <div class="t">${esc(b.name||b.kind||"Commerce")} <span class="tier">Tier ${b.tier}</span></div>
-        <div class="d">Investi : ${gold(b.invested_gold)} po · Revenu moyen : ${gold(b.base_income)} po/session</div>
-        ${b.notes?`<div class="d">${esc(b.notes)}</div>`:""}
-      </div>`)}
+    <div class="panel">
+      <h2>Équipement <span class="count">${equipped.length}</span></h2>
+      ${equipped.length? equipped.map(it=>itemRow(it,true,dis)).join("") : `<div class="empty">Rien d'équipé.</div>`}
+    </div>
 
     <div class="panel">
-      <h2>Historique <span class="count">15 dernières actions</span></h2>
+      <h2>Inventaire <span class="count">${bag.length}</span></h2>
+      ${bag.length? bag.map(it=>itemRow(it,false,dis)).join("") : `<div class="empty">Sac vide.</div>`}
+      ${CAN_EDIT?`<div class="addform">
+        <input id="niName" placeholder="Nouvel objet" />
+        <select id="niCat"><option value="misc">Objet</option><option value="weapon">Arme</option><option value="consumable">Consommable</option><option value="quest">Quête</option></select>
+        <button class="btn mini" data-action="additem">Ajouter</button></div>`:""}
+    </div>
+
+    <div class="panel">
+      <h2>Techniques <span class="count">${techs.length}</span>${CAN_EDIT?`<button class="btn mini ghost" data-action="addability" data-type="technique">+ Ajouter</button>`:""}</h2>
+      ${techs.filter(a=>a.status!=="locked").map(a=>abilityRow(a,dis)).join("") || `<div class="empty">Aucune technique.</div>`}
+      ${techs.some(a=>a.status==="locked")?`<div class="subh">À débloquer</div>`+techs.filter(a=>a.status==="locked").map(a=>abilityRow(a,dis)).join(""):""}
+    </div>
+
+    <div class="panel">
+      <h2>Capacités passives <span class="count">${passives.length}</span>${CAN_EDIT?`<button class="btn mini ghost" data-action="addability" data-type="passive">+ Ajouter</button>`:""}</h2>
+      ${passives.map(a=>abilityRow(a,dis)).join("") || `<div class="empty">Aucune capacité passive.</div>`}
+    </div>
+
+    <div class="panel">
+      <h2>États <span class="count">${(eff.data||[]).length}</span></h2>
+      ${(eff.data||[]).length? eff.data.map(e=>{
+        const label=[e.stat&&e.modifier?`${STAT_LABEL[e.stat]||e.stat} ${e.modifier>0?"+":""}${e.modifier}`:"",e.description?esc(e.description):""].filter(Boolean).join(" — ");
+        return `<div class="item"><div class="body"><div class="t">${esc(e.name)}</div>${label?`<div class="d">${label}</div>`:""}</div>
+          <div class="acts"><label class="switch"><input type="checkbox" data-action="effect" data-id="${e.id}" data-v="${e.is_active?0:1}" ${e.is_active?"checked":""} ${dis}><span class="slider"></span></label>
+          <button class="iconbtn danger" data-action="deleffect" data-id="${e.id}" ${dis}>✕</button></div></div>`;
+      }).join("") : `<div class="empty">Aucun état actif.</div>`}
+      ${CAN_EDIT?`<div class="stateform">
+        <input id="stName" placeholder="Nom de l'état" />
+        <select id="stStat"><option value="">— aucune carac.</option><option value="force">Force</option><option value="endurance">Endurance</option><option value="agilite">Agilité</option><option value="intelligence">Intelligence</option></select>
+        <input id="stMod" type="number" inputmode="numeric" placeholder="±" />
+        <button class="btn mini" data-action="addeffect">Ajouter</button></div>`:""}
+    </div>
+
+    <div class="panel">
+      <h2>Notes <span class="count">${(notes.data||[]).length}</span></h2>
+      ${(notes.data||[]).length? notes.data.map(n=>`<div class="item"><div class="body"><div class="t" style="font-weight:400">${esc(n.content)}</div></div>${CAN_EDIT?`<div class="acts"><button class="iconbtn danger" data-action="delnote" data-id="${n.id}">✕</button></div>`:""}</div>`).join("") : `<div class="empty">Aucune note.</div>`}
+      ${CAN_EDIT?`<div class="addrow"><input id="noteInput" placeholder="Nouvelle note" /><button class="btn mini" data-action="addnote">Ajouter</button></div>`:""}
+    </div>
+
+    <div class="panel">
+      <h2>Compagnons <span class="count">${(comp.data||[]).length}</span></h2>
+      ${(comp.data||[]).length? comp.data.map(k=>`<div class="item"><div class="body"><div class="t">${esc(k.name)}</div>${(k.type||k.description)?`<div class="d">${[k.type,k.description].filter(Boolean).map(esc).join(" — ")}</div>`:""}</div></div>`).join("") : `<div class="empty">Aucun compagnon.</div>`}
+    </div>
+
+    ${(biz.data||[]).length?`<div class="panel"><h2>Commerces <span class="count">${biz.data.length}</span></h2>
+      ${biz.data.map(b=>`<div class="biz"><div class="t">${esc(b.name||b.kind||"Commerce")} <span class="tier">Tier ${b.tier}</span></div>
+        <div class="d">Investi : ${gold(b.invested_gold)} po · Revenu moyen : ${gold(b.base_income)} po/session</div>${b.notes?`<div class="d">${esc(b.notes)}</div>`:""}</div>`).join("")}</div>`:""}
+
+    <div class="panel">
+      <h2>Historique <span class="count">${SHOW_ALL_LOG?"tout":"15 dernières"}</span></h2>
       ${(logs.data&&logs.data.length)? logs.data.map(l=>{
-        const d = new Date(l.created_at).toLocaleString("fr-FR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});
-        const delta = (l.delta!=null)?` (${l.delta>0?"+":""}${l.delta})`:"";
+        const d=new Date(l.created_at).toLocaleString("fr-FR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});
+        const delta=(l.delta!=null)?` (${l.delta>0?"+":""}${l.delta})`:"";
         return `<div class="log"><b>${esc(l.description||l.event_type)}</b>${delta} · <span>${d}</span></div>`;
       }).join("") : `<div class="empty">Aucune action enregistrée.</div>`}
+      <div style="margin-top:12px"><button class="btn ghost mini" data-action="togglelog">${SHOW_ALL_LOG?"Réduire":"Voir tout l'historique"}</button></div>
     </div>
   `;
 }
 
-function listPanel(title, rows, tpl, footer=""){
-  rows = rows||[];
-  const body = rows.length ? rows.map(tpl).join("") : `<div class="empty">Rien pour l'instant.</div>`;
-  return `<div class="panel"><h2>${title} <span class="count">${rows.length}</span></h2>${body}${footer}</div>`;
+function itemRow(it,isEquip,dis){
+  const tags=[
+    it.damage?`<span class="tag dmg">${esc(it.damage)}</span>`:"",
+    (it.category&&it.category!=="misc")?`<span class="tag">${CAT_LABEL[it.category]||esc(it.category)}</span>`:"",
+    (it.stat&&it.modifier)?`<span class="tag">${STAT_LABEL[it.stat]||esc(it.stat)} ${it.modifier>0?"+":""}${it.modifier}</span>`:"",
+  ].join("");
+  const equipBtn = isEquip
+    ? `<button class="iconbtn" data-action="equip" data-id="${it.id}" data-v="0" ${dis}>Déséquiper</button>`
+    : (EQUIPABLE.includes(it.category)?`<button class="iconbtn good" data-action="equip" data-id="${it.id}" data-v="1" ${dis}>Équiper</button>`:"");
+  return `<div class="item"><div class="body"><div class="t">${esc(it.name)}${tags}</div>${it.description?`<div class="d">${esc(it.description)}</div>`:""}</div>
+    <div class="acts">
+      <div class="qty"><button class="iconbtn" data-action="qty" data-id="${it.id}" data-d="-1" ${dis}>−</button><b>${it.quantity}</b><button class="iconbtn" data-action="qty" data-id="${it.id}" data-d="1" ${dis}>+</button></div>
+      ${equipBtn}
+      <button class="iconbtn danger" data-action="delitem" data-id="${it.id}" ${dis}>✕</button>
+    </div></div>`;
 }
-function simpleItem(name, desc){
-  return `<div class="item"><div class="body"><div class="t">${esc(name)}</div>${desc?`<div class="d">${esc(desc)}</div>`:""}</div></div>`;
+function abilityRow(a,dis){
+  const locked=a.status==="locked";
+  const tags=[a.rank?`<span class="tag rank">Rang ${a.rank}</span>`:"", locked?`<span class="tag lock">à débloquer</span>`:""].join("");
+  const acts=CAN_EDIT?`<div class="acts">
+    ${locked?`<button class="iconbtn good" data-action="unlock" data-id="${a.id}">Débloquer</button>`:""}
+    <button class="iconbtn" data-action="editability" data-id="${a.id}">Modifier</button>
+    <button class="iconbtn danger" data-action="delability" data-id="${a.id}">✕</button></div>`:"";
+  return `<div class="item ${locked?"locked":""}"><div class="body"><div class="t">${esc(a.name)}${tags}</div>${a.description?`<div class="d">${esc(a.description)}</div>`:""}</div>${acts}</div>`;
 }
 
-/* ============================================================
-   Actions (écritures) — journalisées dans event_log
-   ============================================================ */
-async function logEvent(type, description, delta){
-  try{ await sb.from("event_log").insert({ character_id:CURRENT.id, event_type:type, description, delta:delta??null }); }catch(e){}
-}
-async function afterWrite(){ await refreshCurrent(); await renderChar(); }
+/* ============ Écritures ============ */
+async function logEvent(type,desc,delta){ try{ await sb.from("event_log").insert({character_id:CURRENT.id,event_type:type,description:desc,delta:delta??null}); }catch(e){} }
+async function afterChar(){ await refreshCurrent(); await renderChar(); }
 
+async function hpMaxNow(){ const {data}=await sb.from("character_effective_stats").select("hp_max").eq("character_id",CURRENT.id).maybeSingle(); return data?.hp_max ?? CURRENT.hp_current; }
 async function changeHP(delta){
-  const { data:s } = await sb.from("character_effective_stats").select("hp_max").eq("character_id",CURRENT.id).maybeSingle();
-  const max = s?.hp_max ?? CURRENT.hp_current;
-  const next = Math.max(0, Math.min(max, CURRENT.hp_current + delta));
-  const real = next - CURRENT.hp_current;
+  const max=await hpMaxNow(); const next=Math.max(0,Math.min(max,CURRENT.hp_current+delta)); const real=next-CURRENT.hp_current;
   if(real===0){ toast(delta<0?"Déjà à 0":"Déjà au max"); return; }
-  const { error } = await sb.from("characters").update({hp_current:next}).eq("id",CURRENT.id);
-  if(error) return toast("Échec : "+error.message);
-  await logEvent("hp", real<0?`Perte de vie`:`Gain de vie`, real);
-  toast(`PV ${real>0?"+":""}${real}`); await afterWrite();
+  const {error}=await sb.from("characters").update({hp_current:next}).eq("id",CURRENT.id); if(error)return toast("Échec : "+error.message);
+  await logEvent("hp",real<0?"Perte de vie":"Gain de vie",real); toast(`PV ${real>0?"+":""}${real}`); await afterChar();
 }
-async function fullHeal(){
-  const { data:s } = await sb.from("character_effective_stats").select("hp_max").eq("character_id",CURRENT.id).maybeSingle();
-  const max = s?.hp_max ?? CURRENT.hp_current;
-  const real = max - CURRENT.hp_current;
-  const { error } = await sb.from("characters").update({hp_current:max}).eq("id",CURRENT.id);
-  if(error) return toast("Échec : "+error.message);
-  if(real) await logEvent("hp","Soin complet",real);
-  toast("Vie au maximum"); await afterWrite();
-}
-async function changeGold(sign){
-  const amt = parseInt($("#goldAmt").value,10);
-  if(!amt||amt<=0){ toast("Entre un montant"); return; }
-  const delta = sign*amt;
-  const next = Math.max(0, CURRENT.gold + delta);
-  const { error } = await sb.from("characters").update({gold:next}).eq("id",CURRENT.id);
-  if(error) return toast("Échec : "+error.message);
-  await logEvent("gold", delta<0?"Dépense d'or":"Gain d'or", delta);
-  toast(`Or ${delta>0?"+":""}${gold(delta)}`); await afterWrite();
-}
-async function changeSurv(key, d){
-  const lvl = Math.max(0, Math.min(5, CURRENT[key]+d));
-  if(lvl===CURRENT[key]) return;
-  const { error } = await sb.from("characters").update({[key]:lvl}).eq("id",CURRENT.id);
-  if(error) return toast("Échec : "+error.message);
-  const names={food_level:"Nourriture",water_level:"Eau",rest_level:"Repos"};
-  await logEvent("survie", `${names[key]} → niveau ${lvl}`, null);
-  await afterWrite();
-}
-async function changeQty(id, d){
-  const { data:it } = await sb.from("inventory_items").select("quantity,name").eq("id",id).maybeSingle();
-  if(!it) return;
-  const q = it.quantity + d;
-  if(q<=0){ await sb.from("inventory_items").delete().eq("id",id); await logEvent("objet",`Retiré : ${it.name}`,null); }
-  else { await sb.from("inventory_items").update({quantity:q}).eq("id",id); }
-  await renderChar();
-}
-async function toggleEquip(id, v){
-  const { error } = await sb.from("inventory_items").update({equipped:!!v}).eq("id",id);
-  if(error) return toast("Échec : "+error.message);
-  await renderChar();
-}
-async function delItem(id){
-  const { data:it } = await sb.from("inventory_items").select("name").eq("id",id).maybeSingle();
-  await sb.from("inventory_items").delete().eq("id",id);
-  if(it) await logEvent("objet",`Retiré : ${it.name}`,null);
-  toast("Objet retiré"); await renderChar();
-}
-async function addItem(){
-  const name = $("#niName").value.trim();
-  const category = $("#niCat").value;
-  if(!name){ toast("Nom de l'objet ?"); return; }
-  const { error } = await sb.from("inventory_items").insert({character_id:CURRENT.id, name, category});
-  if(error) return toast("Échec : "+error.message);
-  await logEvent("objet",`Ajouté : ${name}`,null);
-  toast("Objet ajouté"); await renderChar();
-}
-async function toggleEffect(id, v){
-  const { error } = await sb.from("effects").update({is_active:!!v}).eq("id",id);
-  if(error) return toast("Échec : "+error.message);
-  await renderChar();
-}
+async function hpAmt(sign){ const v=parseInt($("#hpAmt").value,10); if(!v||v<=0)return toast("Entre un montant"); await changeHP(sign*v); }
+async function fullHeal(){ const max=await hpMaxNow(); const real=max-CURRENT.hp_current;
+  const {error}=await sb.from("characters").update({hp_current:max}).eq("id",CURRENT.id); if(error)return toast("Échec : "+error.message);
+  if(real)await logEvent("hp","Soin complet",real); toast("Vie au maximum"); await afterChar(); }
+async function changeGold(sign){ const amt=parseInt($("#goldAmt").value,10); if(!amt||amt<=0)return toast("Entre un montant");
+  const delta=sign*amt, next=Math.max(0,CURRENT.gold+delta);
+  const {error}=await sb.from("characters").update({gold:next}).eq("id",CURRENT.id); if(error)return toast("Échec : "+error.message);
+  await logEvent("gold",delta<0?"Dépense d'or":"Gain d'or",delta); toast(`Or ${delta>0?"+":""}${gold(delta)}`); await afterChar(); }
+async function changeSurv(key,d){ const lvl=Math.max(0,Math.min(5,CURRENT[key]+d)); if(lvl===CURRENT[key])return;
+  const {error}=await sb.from("characters").update({[key]:lvl}).eq("id",CURRENT.id); if(error)return toast("Échec : "+error.message);
+  const names={food_level:"Nourriture",water_level:"Eau",rest_level:"Repos"}; await logEvent("survie",`${names[key]} → niveau ${lvl}`); await afterChar(); }
 
-/* ---------- délégation d'événements ---------- */
-document.addEventListener("click", (e)=>{
-  const b = e.target.closest("[data-action]");
-  if(!b) return;
-  const a = b.dataset.action;
-  if(a==="hp") changeHP(parseInt(b.dataset.d,10));
-  else if(a==="hpfull") fullHeal();
-  else if(a==="gold") changeGold(parseInt(b.dataset.sign,10));
-  else if(a==="surv") changeSurv(b.dataset.k, parseInt(b.dataset.d,10));
-  else if(a==="qty") changeQty(b.dataset.id, parseInt(b.dataset.d,10));
-  else if(a==="equip") toggleEquip(b.dataset.id, parseInt(b.dataset.v,10));
-  else if(a==="delitem") delItem(b.dataset.id);
-  else if(a==="additem") addItem();
+async function changeQty(id,d){ const {data:it}=await sb.from("inventory_items").select("quantity,name").eq("id",id).maybeSingle(); if(!it)return;
+  const q=it.quantity+d; if(q<=0){ await sb.from("inventory_items").delete().eq("id",id); await logEvent("objet",`Retiré : ${it.name}`); } else await sb.from("inventory_items").update({quantity:q}).eq("id",id); await renderChar(); }
+async function toggleEquip(id,v){ const {error}=await sb.from("inventory_items").update({equipped:!!v}).eq("id",id); if(error)return toast("Échec : "+error.message); await renderChar(); }
+async function delItem(id){ const {data:it}=await sb.from("inventory_items").select("name").eq("id",id).maybeSingle(); await sb.from("inventory_items").delete().eq("id",id); if(it)await logEvent("objet",`Retiré : ${it.name}`); toast("Objet retiré"); await renderChar(); }
+async function addItem(){ const name=$("#niName").value.trim(), category=$("#niCat").value; if(!name)return toast("Nom de l'objet ?");
+  const {error}=await sb.from("inventory_items").insert({character_id:CURRENT.id,name,category}); if(error)return toast("Échec : "+error.message); await logEvent("objet",`Ajouté : ${name}`); toast("Objet ajouté"); await renderChar(); }
+
+async function addNote(){ const content=$("#noteInput").value.trim(); if(!content)return toast("Note vide"); const {error}=await sb.from("notes").insert({character_id:CURRENT.id,content}); if(error)return toast("Échec : "+error.message); await renderChar(); }
+async function delNote(id){ await sb.from("notes").delete().eq("id",id); await renderChar(); }
+
+async function addEffect(){ const name=$("#stName").value.trim(); if(!name)return toast("Nom de l'état ?");
+  const stat=$("#stStat").value||null; const mod=parseInt($("#stMod").value,10);
+  const row={character_id:CURRENT.id,name,is_active:true}; if(stat){row.stat=stat; if(!isNaN(mod))row.modifier=mod;}
+  const {error}=await sb.from("effects").insert(row); if(error)return toast("Échec : "+error.message); await logEvent("etat",`État ajouté : ${name}`); await renderChar(); }
+async function delEffect(id){ const {data:e}=await sb.from("effects").select("name").eq("id",id).maybeSingle(); await sb.from("effects").delete().eq("id",id); if(e)await logEvent("etat",`État retiré : ${e.name}`); await renderChar(); }
+async function toggleEffect(id,v){ const {error}=await sb.from("effects").update({is_active:!!v}).eq("id",id); if(error)return toast("Échec : "+error.message); await renderChar(); }
+
+/* Capacités : modal */
+function openAbility(id,type){
+  const isTech=(type||"technique")!=="passive";
+  $("#abId").value=id||""; $("#abType").value=type||"technique";
+  $("#abTitle").textContent=(isTech?"Technique":"Capacité passive");
+  $("#abRankField").style.display=isTech?"":"none"; $("#abLockField").style.display=isTech?"":"none";
+  if(id){ const a=CURRENT._abils.find(x=>x.id===id)||{}; $("#abName").value=a.name||""; $("#abDesc").value=a.description||""; $("#abRank").value=a.rank??""; $("#abLocked").checked=a.status==="locked"; }
+  else { $("#abName").value=""; $("#abDesc").value=""; $("#abRank").value=""; $("#abLocked").checked=false; }
+  $("#abModal").classList.remove("hidden");
+}
+function closeModal(){ $("#abModal").classList.add("hidden"); }
+async function saveAbility(){
+  const id=$("#abId").value, type=$("#abType").value, name=$("#abName").value.trim();
+  if(!name)return toast("Nom requis");
+  const rankRaw=$("#abRank").value, rank=(type==="technique"&&rankRaw!=="")?parseInt(rankRaw,10):null;
+  const status=(type==="technique"&&$("#abLocked").checked)?"locked":"unlocked";
+  const desc=$("#abDesc").value.trim()||null;
+  let error;
+  if(id){ ({error}=await sb.from("abilities").update({name,description:desc,rank,status}).eq("id",id)); }
+  else { ({error}=await sb.from("abilities").insert({character_id:CURRENT.id,type,name,description:desc,rank,status})); await logEvent("capacite",`Ajout : ${name}`); }
+  if(error)return toast("Échec : "+error.message); closeModal(); toast("Enregistré"); await renderChar();
+}
+async function unlockAbility(id){ const {data:a}=await sb.from("abilities").select("name").eq("id",id).maybeSingle(); await sb.from("abilities").update({status:"unlocked"}).eq("id",id); if(a)await logEvent("capacite",`Débloqué : ${a.name}`); toast("Débloquée"); await renderChar(); }
+async function delAbility(id){ await sb.from("abilities").delete().eq("id",id); await renderChar(); }
+
+/* garder les capacités en mémoire pour le modal */
+const _origRender=renderChar;
+renderChar=async function(){ await _origRender(); const {data}=await sb.from("abilities").select("*").eq("character_id",CURRENT.id); CURRENT._abils=data||[]; };
+
+/* ============ Délégation ============ */
+document.addEventListener("click",(e)=>{
+  const b=e.target.closest("[data-action]"); if(!b)return; const a=b.dataset.action;
+  if(a==="hp")changeHP(parseInt(b.dataset.d,10));
+  else if(a==="hpamt")hpAmt(parseInt(b.dataset.sign,10));
+  else if(a==="hpfull")fullHeal();
+  else if(a==="gold")changeGold(parseInt(b.dataset.sign,10));
+  else if(a==="surv")changeSurv(b.dataset.k,parseInt(b.dataset.d,10));
+  else if(a==="qty")changeQty(b.dataset.id,parseInt(b.dataset.d,10));
+  else if(a==="equip")toggleEquip(b.dataset.id,parseInt(b.dataset.v,10));
+  else if(a==="delitem")delItem(b.dataset.id);
+  else if(a==="additem")addItem();
+  else if(a==="addnote")addNote();
+  else if(a==="delnote")delNote(b.dataset.id);
+  else if(a==="addeffect")addEffect();
+  else if(a==="deleffect")delEffect(b.dataset.id);
+  else if(a==="addability")openAbility(null,b.dataset.type);
+  else if(a==="editability")openAbility(b.dataset.id,(CURRENT._abils.find(x=>x.id===b.dataset.id)||{}).type);
+  else if(a==="delability")delAbility(b.dataset.id);
+  else if(a==="unlock")unlockAbility(b.dataset.id);
+  else if(a==="saveability")saveAbility();
+  else if(a==="closemodal")closeModal();
+  else if(a==="togglelog"){ SHOW_ALL_LOG=!SHOW_ALL_LOG; renderChar(); }
 });
-document.addEventListener("change", (e)=>{
-  const b = e.target.closest("[data-action='effect']");
-  if(b) toggleEffect(b.dataset.id, parseInt(b.dataset.v,10));
-});
+document.addEventListener("change",(e)=>{ const b=e.target.closest("[data-action='effect']"); if(b)toggleEffect(b.dataset.id,parseInt(b.dataset.v,10)); });
 
-$("#loginBtn").addEventListener("click", login);
-$("#password").addEventListener("keydown", e=>{ if(e.key==="Enter") login(); });
-$("#logoutBtn").addEventListener("click", logout);
-
+$("#loginBtn").addEventListener("click",login);
+$("#password").addEventListener("keydown",e=>{ if(e.key==="Enter")login(); });
+$("#logoutBtn").addEventListener("click",logout);
 boot();
 </script>
 </body>
