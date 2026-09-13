@@ -289,6 +289,7 @@ async function renderChar(){
       <div class="idmeta">${[c.title,c.origine,c.ordre].filter(Boolean).map(esc).join(" · ")}</div>
       <div class="idmeta">${[c.armor?("Armure : "+esc(c.armor)):"",c.age?("Âge : "+esc(c.age)):""].filter(Boolean).join(" · ")}</div>
       ${!CAN_EDIT?`<div class="readonly-note">Lecture seule (fiche d'un autre joueur)</div>`:""}
+      ${(CAN_EDIT&&c.notion_title)?`<div style="margin-top:12px"><button class="btn mini" data-action="syncnotion">Synchroniser vers Notion</button></div>`:""}
     </div>
 
     <div class="panel vitals">
@@ -502,6 +503,22 @@ async function delAbility(id){ await sb.from("abilities").delete().eq("id",id); 
 const _origRender=renderChar;
 renderChar=async function(){ await _origRender(); const {data}=await sb.from("abilities").select("*").eq("character_id",CURRENT.id); CURRENT._abils=data||[]; };
 
+/* ============ Synchro Notion ============ */
+async function syncNotion(){
+  toast("Synchronisation…");
+  try{
+    const { data:{ session } } = await sb.auth.getSession();
+    const res = await fetch(SB_URL+"/functions/v1/sync-notion", {
+      method:"POST",
+      headers:{ "Authorization":`Bearer ${session.access_token}`, "apikey":SB_KEY, "Content-Type":"application/json" },
+      body: JSON.stringify({ character_id: CURRENT.id }),
+    });
+    const j = await res.json().catch(()=>({}));
+    toast(j.ok ? "Synchronisé vers Notion ✓" : ("Notion : "+(j.message||"échec")));
+    if(j.ok) await refreshCurrent();
+  }catch(e){ toast("Notion : erreur réseau"); }
+}
+
 /* ============ Délégation ============ */
 document.addEventListener("click",(e)=>{
   const b=e.target.closest("[data-action]"); if(!b)return; const a=b.dataset.action;
@@ -524,6 +541,7 @@ document.addEventListener("click",(e)=>{
   else if(a==="unlock")unlockAbility(b.dataset.id);
   else if(a==="saveability")saveAbility();
   else if(a==="closemodal")closeModal();
+  else if(a==="syncnotion")syncNotion();
   else if(a==="togglelog"){ SHOW_ALL_LOG=!SHOW_ALL_LOG; renderChar(); }
 });
 document.addEventListener("change",(e)=>{ const b=e.target.closest("[data-action='effect']"); if(b)toggleEffect(b.dataset.id,parseInt(b.dataset.v,10)); });
