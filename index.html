@@ -200,6 +200,27 @@
   </div>
 </div>
 
+<!-- MODAL édition objet -->
+<div id="itModal" class="modal hidden">
+  <div class="box">
+    <h3>Objet</h3>
+    <input type="hidden" id="itId">
+    <div class="field"><label>Nom</label><input id="itName" /></div>
+    <div class="field"><label>Catégorie</label>
+      <select id="itCat"><option value="misc">Objet</option><option value="weapon">Arme</option><option value="consumable">Consommable</option><option value="quest">Quête</option></select></div>
+    <div class="field"><label>Quantité</label><input id="itQty" type="number" inputmode="numeric" value="1" /></div>
+    <div class="field"><label>Dégâts (armes, optionnel)</label><input id="itDamage" placeholder="ex. 1d10 flat 8" /></div>
+    <div class="field"><label>Bonus de caractéristique (optionnel, s'applique quand l'objet est équipé)</label>
+      <div style="display:flex;gap:6px">
+        <select id="itStat" style="flex:1"><option value="">— aucune</option><option value="force">Force</option><option value="endurance">Endurance</option><option value="agilite">Agilité</option><option value="intelligence">Intelligence</option></select>
+        <input id="itMod" type="number" inputmode="numeric" placeholder="±" style="width:90px" />
+      </div>
+    </div>
+    <div class="field"><label>Description (optionnel)</label><textarea id="itDesc"></textarea></div>
+    <div class="row"><button class="btn ghost" data-action="closeitem">Annuler</button><button class="btn" data-action="saveitem">Enregistrer</button></div>
+  </div>
+</div>
+
 <div id="toast" class="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
@@ -277,6 +298,7 @@ async function renderChar(){
   const S=stats.data||{force_effective:0,endurance_effective:0,agilite_effective:0,intelligence_effective:0,hp_max:0};
   const hpMax=S.hp_max||0, hpPct=hpMax?Math.max(0,Math.min(100,Math.round(c.hp_current/hpMax*100))):0;
   const items=inv.data||[];
+  CURRENT._items=items;
   const equipped=items.filter(i=>i.equipped), bag=items.filter(i=>!i.equipped);
   const techs=(abil.data||[]).filter(a=>a.type!=="passive");
   const passives=(abil.data||[]).filter(a=>a.type==="passive");
@@ -342,6 +364,20 @@ async function renderChar(){
     </div>
 
     <div class="panel">
+      <h2>Armure <span class="count">réduction de dégâts</span></h2>
+      <div class="goldrow">
+        <div><div class="goldval" style="font-size:22px">${c.armor_reduction>0?"−"+c.armor_reduction:"0"}</div>${c.armor?`<div class="muted" style="font-size:12px">${esc(c.armor)}</div>`:""}</div>
+        <div class="goldctrls">
+          <button class="iconbtn" data-action="armor" data-v="1" ${dis}>Tissu −1</button>
+          <button class="iconbtn" data-action="armor" data-v="2" ${dis}>Cuir −2</button>
+          <button class="iconbtn" data-action="armor" data-v="3" ${dis}>Maille −3</button>
+          <button class="iconbtn" data-action="armor" data-v="4" ${dis}>Plaque −4</button>
+        </div>
+      </div>
+      ${CAN_EDIT?`<div class="addrow" style="margin-top:10px"><input id="armorManual" type="number" inputmode="numeric" placeholder="valeur manuelle (ex. 3 pour tissu+cuir)" /><button class="btn mini" data-action="armorset">Fixer</button></div>`:""}
+    </div>
+
+    <div class="panel">
       <h2>Équipement <span class="count">${equipped.length}</span></h2>
       ${equipped.length? equipped.map(it=>itemRow(it,true,dis)).join("") : `<div class="empty">Rien d'équipé.</div>`}
     </div>
@@ -352,7 +388,8 @@ async function renderChar(){
       ${CAN_EDIT?`<div class="addform">
         <input id="niName" placeholder="Nouvel objet" />
         <select id="niCat"><option value="misc">Objet</option><option value="weapon">Arme</option><option value="consumable">Consommable</option><option value="quest">Quête</option></select>
-        <button class="btn mini" data-action="additem">Ajouter</button></div>`:""}
+        <button class="btn mini" data-action="additem">Ajouter</button></div>
+        <div style="margin-top:8px"><button class="btn mini ghost" data-action="newitem">+ Objet détaillé (avec bonus)</button></div>`:""}
     </div>
 
     <div class="panel">
@@ -421,6 +458,7 @@ function itemRow(it,isEquip,dis){
     <div class="acts">
       <div class="qty"><button class="iconbtn" data-action="qty" data-id="${it.id}" data-d="-1" ${dis}>−</button><b>${it.quantity}</b><button class="iconbtn" data-action="qty" data-id="${it.id}" data-d="1" ${dis}>+</button></div>
       ${equipBtn}
+      ${dis?"":`<button class="iconbtn" data-action="edititem" data-id="${it.id}">Modifier</button>`}
       <button class="iconbtn danger" data-action="delitem" data-id="${it.id}" ${dis}>✕</button>
     </div></div>`;
 }
@@ -463,6 +501,44 @@ async function toggleEquip(id,v){ const {error}=await sb.from("inventory_items")
 async function delItem(id){ const {data:it}=await sb.from("inventory_items").select("name").eq("id",id).maybeSingle(); await sb.from("inventory_items").delete().eq("id",id); if(it)await logEvent("objet",`Retiré : ${it.name}`); toast("Objet retiré"); await renderChar(); }
 async function addItem(){ const name=$("#niName").value.trim(), category=$("#niCat").value; if(!name)return toast("Nom de l'objet ?");
   const {error}=await sb.from("inventory_items").insert({character_id:CURRENT.id,name,category}); if(error)return toast("Échec : "+error.message); await logEvent("objet",`Ajouté : ${name}`); toast("Objet ajouté"); await renderChar(); }
+
+/* Objet : modal détaillé (avec bonus de carac) */
+function openItem(id){
+  const it=id?(CURRENT._items||[]).find(x=>x.id===id)||{}:{};
+  $("#itId").value=id||"";
+  $("#itName").value=it.name||""; $("#itCat").value=it.category||"misc";
+  $("#itQty").value=it.quantity??1; $("#itDamage").value=it.damage||"";
+  $("#itStat").value=it.stat||""; $("#itMod").value=it.modifier??"";
+  $("#itDesc").value=it.description||"";
+  $("#itModal").classList.remove("hidden");
+}
+function closeItem(){ $("#itModal").classList.add("hidden"); }
+async function saveItem(){
+  const id=$("#itId").value, name=$("#itName").value.trim();
+  if(!name)return toast("Nom requis");
+  const stat=$("#itStat").value||null; const modRaw=$("#itMod").value;
+  const row={
+    name, category:$("#itCat").value,
+    quantity:parseInt($("#itQty").value,10)||1,
+    damage:$("#itDamage").value.trim()||null,
+    stat, modifier:(stat&&modRaw!=="")?parseInt(modRaw,10):null,
+    description:$("#itDesc").value.trim()||null,
+  };
+  let error;
+  if(id){ ({error}=await sb.from("inventory_items").update(row).eq("id",id)); }
+  else { row.character_id=CURRENT.id; ({error}=await sb.from("inventory_items").insert(row)); await logEvent("objet",`Ajouté : ${name}`); }
+  if(error)return toast("Échec : "+error.message);
+  closeItem(); toast("Objet enregistré"); await renderChar();
+}
+
+/* Armure : réduction de dégâts */
+async function setArmor(v){
+  const {error}=await sb.from("characters").update({armor_reduction:v}).eq("id",CURRENT.id);
+  if(error)return toast("Échec : "+error.message);
+  await afterChar();
+}
+async function setArmorManual(){ const v=parseInt($("#armorManual").value,10); if(isNaN(v)||v<0)return toast("Valeur invalide"); await setArmor(v); }
+
 
 async function addNote(){ const content=$("#noteInput").value.trim(); if(!content)return toast("Note vide"); const {error}=await sb.from("notes").insert({character_id:CURRENT.id,content}); if(error)return toast("Échec : "+error.message); await renderChar(); }
 async function delNote(id){ await sb.from("notes").delete().eq("id",id); await renderChar(); }
@@ -531,6 +607,12 @@ document.addEventListener("click",(e)=>{
   else if(a==="equip")toggleEquip(b.dataset.id,parseInt(b.dataset.v,10));
   else if(a==="delitem")delItem(b.dataset.id);
   else if(a==="additem")addItem();
+  else if(a==="newitem")openItem(null);
+  else if(a==="edititem")openItem(b.dataset.id);
+  else if(a==="saveitem")saveItem();
+  else if(a==="closeitem")closeItem();
+  else if(a==="armor")setArmor(parseInt(b.dataset.v,10));
+  else if(a==="armorset")setArmorManual();
   else if(a==="addnote")addNote();
   else if(a==="delnote")delNote(b.dataset.id);
   else if(a==="addeffect")addEffect();
