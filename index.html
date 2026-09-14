@@ -159,6 +159,32 @@
 
   .toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:var(--panel2);border:1px solid var(--gold);color:var(--ink);padding:10px 16px;border-radius:10px;font-size:14px;opacity:0;transition:.25s;pointer-events:none;z-index:80}
   .toast.show{opacity:1}
+  /* Navigation Fiche / Codex */
+  .nav{display:flex;gap:6px;margin-bottom:14px}
+  .navbtn{flex:1;background:var(--panel);border:1px solid var(--line);color:var(--muted);border-radius:10px;padding:10px 0;font-size:14px;font-weight:600;cursor:pointer}
+  .navbtn.active{background:var(--panel2);color:var(--gold);border-color:var(--gold)}
+
+  /* Galerie d'images */
+  .gallery{display:flex;flex-wrap:wrap;gap:8px}
+  .thumb{width:78px;height:78px;border-radius:10px;overflow:hidden;border:1px solid var(--line);position:relative;cursor:pointer;background:var(--bg2)}
+  .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .thumb .del{position:absolute;top:2px;right:2px;background:rgba(20,15,8,.8);border:1px solid #5c342d;color:#eab5ad;border-radius:6px;width:22px;height:22px;font-size:12px;cursor:pointer;line-height:1}
+  .uploadbtn{width:78px;height:78px;border-radius:10px;border:1px dashed var(--line);background:var(--bg2);color:var(--muted);cursor:pointer;font-size:26px;display:flex;align-items:center;justify-content:center}
+  .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.9);display:flex;align-items:center;justify-content:center;padding:20px;z-index:90;cursor:zoom-out}
+  .lightbox img{max-width:100%;max-height:100%;border-radius:10px}
+
+  /* Codex */
+  .catbar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+  .catbtn{background:var(--panel);border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer}
+  .catbtn.active{background:var(--panel2);color:var(--gold);border-color:var(--gold)}
+  .cx{display:flex;gap:10px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--line)}
+  .cx:first-child{border-top:none}
+  .cx.hidden-entry{opacity:.6}
+  .cx .body{flex:1;min-width:0}
+  .cx .t{font-weight:500}
+  .cx .s{font-size:12px;color:var(--gold);margin-top:1px}
+  .cx .d{font-size:12.5px;color:var(--muted);margin-top:4px;white-space:pre-wrap}
+  .cx .acts{display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -183,6 +209,10 @@
     <select id="charSelect" class="hidden"></select>
     <span id="whoami" class="who"></span>
     <button id="logoutBtn" class="btn ghost mini">Déconnexion</button>
+  </div>
+  <div class="nav">
+    <button id="navFiche" class="navbtn active" data-action="view" data-v="fiche">Fiche</button>
+    <button id="navCodex" class="navbtn" data-action="view" data-v="codex">Codex</button>
   </div>
   <div id="content"></div>
 </div>
@@ -221,6 +251,24 @@
   </div>
 </div>
 
+<!-- MODAL édition entrée de codex (MJ) -->
+<div id="cxModal" class="modal hidden">
+  <div class="box">
+    <h3>Entrée de codex</h3>
+    <input type="hidden" id="cxId">
+    <div class="field"><label>Catégorie</label>
+      <select id="cxCat"><option value="lieu">Lieu</option><option value="pnj">PNJ</option><option value="monstre">Monstre</option><option value="quete">Quête</option><option value="faction">Faction</option><option value="item">Objet</option><option value="autre">Autre</option></select></div>
+    <div class="field"><label>Nom</label><input id="cxName" /></div>
+    <div class="field"><label>Sous-titre (type, race, statut…)</label><input id="cxSub" /></div>
+    <div class="field"><label>Détails</label><textarea id="cxDetails"></textarea></div>
+    <label class="check"><input type="checkbox" id="cxVisible"> Révélé aux joueurs</label>
+    <div class="row"><button class="btn ghost" data-action="closecx">Annuler</button><button class="btn" data-action="savecx">Enregistrer</button></div>
+  </div>
+</div>
+
+<!-- Visionneuse d'image plein écran -->
+<div id="lightbox" class="lightbox hidden" data-action="closelb"><img id="lightboxImg" src="" alt="" /></div>
+
 <div id="toast" class="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
@@ -231,7 +279,7 @@ const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJ
 const sb = supabase.createClient(SB_URL, SB_KEY);
 
 let ME = { id:null, role:"player", name:"" };
-let CHARS = [], CURRENT = null, CAN_EDIT = false, SHOW_ALL_LOG = false;
+let CHARS = [], CURRENT = null, CAN_EDIT = false, SHOW_ALL_LOG = false, VIEW = "fiche";
 
 const PCT = {5:"+10%",4:"+5%",3:"0%",2:"-5%",1:"-10%",0:"-20%"};
 const SURV = [
@@ -285,7 +333,7 @@ async function refreshCurrent(){ const {data}=await sb.from("characters").select
 async function renderChar(){
   const cid=CURRENT.id, c=CURRENT;
   const logQ = sb.from("event_log").select("*").eq("character_id",cid).order("created_at",{ascending:false});
-  const [stats,inv,abil,eff,comp,biz,notes,logs] = await Promise.all([
+  const [stats,inv,abil,eff,comp,biz,notes,logs,imgs] = await Promise.all([
     sb.from("character_effective_stats").select("*").eq("character_id",cid).maybeSingle(),
     sb.from("inventory_items").select("*").eq("character_id",cid).order("name"),
     sb.from("abilities").select("*").eq("character_id",cid).order("status").order("name"),
@@ -294,6 +342,7 @@ async function renderChar(){
     sb.from("businesses").select("*").eq("character_id",cid).order("name"),
     sb.from("notes").select("*").eq("character_id",cid).order("created_at"),
     SHOW_ALL_LOG? logQ : logQ.limit(15),
+    sb.from("character_images").select("*").eq("character_id",cid).order("created_at"),
   ]);
   const S=stats.data||{force_effective:0,endurance_effective:0,agilite_effective:0,intelligence_effective:0,hp_max:0};
   const hpMax=S.hp_max||0, hpPct=hpMax?Math.max(0,Math.min(100,Math.round(c.hp_current/hpMax*100))):0;
@@ -313,6 +362,14 @@ async function renderChar(){
       ${!CAN_EDIT?`<div class="readonly-note">Lecture seule (fiche d'un autre joueur)</div>`:""}
       ${(CAN_EDIT&&c.notion_title)?`<div style="margin-top:12px"><button class="btn mini" data-action="syncnotion">Synchroniser vers Notion</button></div>`:""}
     </div>
+
+    ${(imgs.data&&imgs.data.length)||CAN_EDIT?`<div class="panel">
+      <h2>Images <span class="count">${(imgs.data||[]).length}</span></h2>
+      <div class="gallery">
+        ${(imgs.data||[]).map(im=>`<div class="thumb"><img src="${esc(im.url)}" data-action="lightbox" data-url="${esc(im.url)}" alt="" />${CAN_EDIT?`<button class="del" data-action="delimg" data-id="${im.id}" data-url="${esc(im.url)}">✕</button>`:""}</div>`).join("")}
+        ${CAN_EDIT?`<label class="uploadbtn">+<input id="imgUpload" type="file" accept="image/*" style="display:none" /></label>`:""}
+      </div>
+    </div>`:""}
 
     <div class="panel vitals">
       <div class="hp-label">POINTS DE VIE</div>
@@ -595,6 +652,91 @@ async function syncNotion(){
   }catch(e){ toast("Notion : erreur réseau"); }
 }
 
+/* ============ Navigation Fiche / Codex ============ */
+function setView(v){
+  VIEW=v;
+  $("#navFiche").classList.toggle("active", v==="fiche");
+  $("#navCodex").classList.toggle("active", v==="codex");
+  if(v==="codex") renderCodex();
+  else if(CURRENT) renderChar();
+  else $("#content").innerHTML=`<div class="panel empty">Aucune fiche pour ce compte pour le moment.</div>`;
+}
+
+/* ============ Codex ============ */
+const CX_CATS=[["all","Tout"],["lieu","Lieux"],["pnj","PNJ"],["monstre","Monstres"],["quete","Quêtes"],["faction","Factions"],["item","Objets"],["autre","Autre"]];
+const CX_CAT_LABEL={lieu:"Lieu",pnj:"PNJ",monstre:"Monstre",quete:"Quête",faction:"Faction",item:"Objet",autre:"Autre"};
+let CX_FILTER="all";
+async function renderCodex(){
+  let q=sb.from("codex_entries").select("*").order("category").order("name");
+  const { data, error } = await q;
+  if(error){ $("#content").innerHTML=`<div class="panel empty">Erreur : ${esc(error.message)}</div>`; return; }
+  const rows=(data||[]).filter(e=>CX_FILTER==="all"||e.category===CX_FILTER);
+  const isGM=ME.role==="gm";
+  $("#content").innerHTML=`
+    <div class="catbar">${CX_CATS.map(([k,l])=>`<button class="catbtn ${CX_FILTER===k?"active":""}" data-action="cxfilter" data-k="${k}">${l}</button>`).join("")}</div>
+    ${isGM?`<div style="margin-bottom:14px"><button class="btn mini" data-action="cxadd">+ Ajouter une entrée</button></div>`:""}
+    <div class="panel">
+      ${rows.length? rows.map(e=>cxRow(e,isGM)).join("") : `<div class="empty">Rien dans cette catégorie${isGM?"":" que tu aies découvert"}.</div>`}
+    </div>`;
+}
+function cxRow(e,isGM){
+  const hidden=e.visibility!=="players";
+  const acts=isGM?`<div class="acts">
+    <button class="iconbtn ${hidden?"":"good"}" data-action="cxreveal" data-id="${e.id}" data-v="${hidden?"players":"mj"}">${hidden?"Révéler":"Masquer"}</button>
+    <button class="iconbtn" data-action="cxedit" data-id="${e.id}">Modifier</button>
+    <button class="iconbtn danger" data-action="cxdel" data-id="${e.id}">✕</button></div>`:"";
+  return `<div class="cx ${hidden?"hidden-entry":""}">
+    <div class="body"><div class="t">${esc(e.name)}${hidden?` <span class="tag lock">MJ</span>`:""}</div>
+      ${e.subtitle?`<div class="s">${esc(e.subtitle)}</div>`:""}
+      ${e.details?`<div class="d">${esc(e.details)}</div>`:""}</div>${acts}</div>`;
+}
+let CX_ALL=[];
+function openCodex(id){
+  const e=id?CX_ALL.find(x=>x.id===id)||{}:{};
+  $("#cxId").value=id||""; $("#cxCat").value=e.category||"lieu";
+  $("#cxName").value=e.name||""; $("#cxSub").value=e.subtitle||"";
+  $("#cxDetails").value=e.details||""; $("#cxVisible").checked=e.visibility==="players";
+  $("#cxModal").classList.remove("hidden");
+}
+function closeCodex(){ $("#cxModal").classList.add("hidden"); }
+async function saveCodex(){
+  const id=$("#cxId").value, name=$("#cxName").value.trim(); if(!name)return toast("Nom requis");
+  const row={category:$("#cxCat").value,name,subtitle:$("#cxSub").value.trim()||null,details:$("#cxDetails").value.trim()||null,visibility:$("#cxVisible").checked?"players":"mj"};
+  let error;
+  if(id){ ({error}=await sb.from("codex_entries").update(row).eq("id",id)); }
+  else { ({error}=await sb.from("codex_entries").insert(row)); }
+  if(error)return toast("Échec : "+error.message);
+  closeCodex(); toast("Entrée enregistrée"); await renderCodex();
+}
+async function cxReveal(id,v){ const {error}=await sb.from("codex_entries").update({visibility:v}).eq("id",id); if(error)return toast("Échec : "+error.message); toast(v==="players"?"Révélé aux joueurs":"Masqué"); await renderCodex(); }
+async function cxDelete(id){ await sb.from("codex_entries").delete().eq("id",id); await renderCodex(); }
+
+/* garder les entrées pour le modal MJ */
+const _origCodex=renderCodex;
+renderCodex=async function(){ await _origCodex(); const {data}=await sb.from("codex_entries").select("*"); CX_ALL=data||[]; };
+
+/* ============ Images ============ */
+async function uploadImage(file){
+  if(!file){ return; }
+  if(file.size>6*1024*1024){ toast("Image trop lourde (max 6 Mo)"); return; }
+  toast("Envoi de l'image…");
+  const ext=(file.name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"");
+  const path=`characters/${CURRENT.id}/${Date.now()}.${ext}`;
+  const up=await sb.storage.from("images").upload(path,file,{contentType:file.type,upsert:false});
+  if(up.error){ toast("Échec envoi : "+up.error.message); return; }
+  const url=sb.storage.from("images").getPublicUrl(path).data.publicUrl;
+  const {error}=await sb.from("character_images").insert({character_id:CURRENT.id,url});
+  if(error){ toast("Échec : "+error.message); return; }
+  toast("Image ajoutée"); await renderChar();
+}
+async function delImage(id,url){
+  await sb.from("character_images").delete().eq("id",id);
+  try{ const m=url.match(/\/images\/(.+)$/); if(m) await sb.storage.from("images").remove([m[1]]); }catch(e){}
+  await renderChar();
+}
+function openLightbox(url){ $("#lightboxImg").src=url; $("#lightbox").classList.remove("hidden"); }
+function closeLightbox(){ $("#lightbox").classList.add("hidden"); $("#lightboxImg").src=""; }
+
 /* ============ Délégation ============ */
 document.addEventListener("click",(e)=>{
   const b=e.target.closest("[data-action]"); if(!b)return; const a=b.dataset.action;
@@ -625,8 +767,22 @@ document.addEventListener("click",(e)=>{
   else if(a==="closemodal")closeModal();
   else if(a==="syncnotion")syncNotion();
   else if(a==="togglelog"){ SHOW_ALL_LOG=!SHOW_ALL_LOG; renderChar(); }
+  else if(a==="view")setView(b.dataset.v);
+  else if(a==="cxfilter"){ CX_FILTER=b.dataset.k; renderCodex(); }
+  else if(a==="cxadd")openCodex(null);
+  else if(a==="cxedit")openCodex(b.dataset.id);
+  else if(a==="cxreveal")cxReveal(b.dataset.id,b.dataset.v);
+  else if(a==="cxdel")cxDelete(b.dataset.id);
+  else if(a==="savecx")saveCodex();
+  else if(a==="closecx")closeCodex();
+  else if(a==="lightbox")openLightbox(b.dataset.url);
+  else if(a==="closelb")closeLightbox();
+  else if(a==="delimg")delImage(b.dataset.id,b.dataset.url);
 });
-document.addEventListener("change",(e)=>{ const b=e.target.closest("[data-action='effect']"); if(b)toggleEffect(b.dataset.id,parseInt(b.dataset.v,10)); });
+document.addEventListener("change",(e)=>{
+  const eff=e.target.closest("[data-action='effect']"); if(eff){ toggleEffect(eff.dataset.id,parseInt(eff.dataset.v,10)); return; }
+  if(e.target.id==="imgUpload"){ const f=e.target.files&&e.target.files[0]; if(f)uploadImage(f); }
+});
 
 $("#loginBtn").addEventListener("click",login);
 $("#password").addEventListener("keydown",e=>{ if(e.key==="Enter")login(); });
